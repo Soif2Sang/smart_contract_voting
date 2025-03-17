@@ -1,3 +1,4 @@
+import AddProposalForm from './AddProposalForm';
 import AddUserForm from './AddUserForm';
 import './App.css';
 
@@ -8,9 +9,9 @@ function App() {
 				<h1>Cryptobro</h1>
 			</header>
 			<AddUserForm></AddUserForm>
-			<button>
-				Start voting process
-			</button>
+			<AddProposalForm></AddProposalForm>
+			<br />
+			<button>Start voting process</button>
 		</div>
 	);
 }

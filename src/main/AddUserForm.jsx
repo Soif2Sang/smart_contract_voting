@@ -8,21 +8,29 @@ function AddUserForm() {
 		event.preventDefault();
 		console.log(event);
 
-		if (!addresses.find(a => a === address)) {
+		if (!addresses.find((a) => a === address)) {
 			const newAddresses = addresses.concat([address]);
-			setAddresses(newAddresses)
-		}	
+			setAddresses(newAddresses);
+		}
 	}
 
 	return (
 		<>
 			<form onSubmit={addAddress}>
-				<label htmlFor="voter">New voter's address : {address}</label><br />
-				<input type="text" onChange={(event) => setAddress(event.target.value)}></input>
+				<label>New voter's address : {address}</label>
+				<br />
+				<input
+					type="text"
+					onChange={(event) => setAddress(event.target.value)}
+				></input>
 			</form>
 
 			<ul>
-				{addresses.map(address => (<li key={address}><p>{address}</p></li>))}
+				{addresses.map((address) => (
+					<li key={address}>
+						<p>{address}</p>
+					</li>
+				))}
 			</ul>
 		</>
 	);

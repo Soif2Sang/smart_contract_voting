@@ -11,7 +11,11 @@ function App() {
 			<AddUserForm></AddUserForm>
 			<AddProposalForm></AddProposalForm>
 			<br />
-			<button>Start voting process</button>
+			<button>Start proposals</button>
+			<button>Close proposals</button>
+			<br />
+			<button>Start voting</button>
+			<button>Close voting</button>
 		</div>
 	);
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 function AddProposalForm() {
 	const [proposalContent, setProposalContent] = useState('');
+	const [proposals, setProposals] = useState([]);
 
 	return (
 		<>
@@ -10,7 +11,7 @@ function AddProposalForm() {
 					event.preventDefault();
 					console.log(event);
 
-					// TODO handle submit
+					setProposals(proposals.concat([proposalContent]));
 				}}
 			>
 				<label>Write your proposal : </label>
@@ -24,6 +25,22 @@ function AddProposalForm() {
 					{/* Submit : */}
 				</input>
 			</form>
+
+			<ul>
+				{proposals.map((proposal) => (
+					<li key={proposal}>
+						<p>{proposal}</p>
+						<button
+							onClick={function (event) {
+								event.preventDefault();
+								console.log(event);
+
+								
+							}}
+						></button>
+					</li>
+				))}
+			</ul>
 		</>
 	);
 }

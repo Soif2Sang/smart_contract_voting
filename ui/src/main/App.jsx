@@ -1,6 +1,7 @@
 import AddProposalForm from './AddProposalForm';
 import AddUserForm from './AddUserForm';
 import './App.css';
+import MetamaskLoginSection from './MetamaskLoginSection';
 
 function App() {
 	return (
@@ -8,6 +9,7 @@ function App() {
 			<header>
 				<h1>Cryptobro</h1>
 			</header>
+			<MetamaskLoginSection></MetamaskLoginSection>
 			<AddUserForm></AddUserForm>
 			<AddProposalForm></AddProposalForm>
 			<br />

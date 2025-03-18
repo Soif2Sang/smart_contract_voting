@@ -34,10 +34,10 @@ function AddProposalForm() {
 							onClick={function (event) {
 								event.preventDefault();
 								console.log(event);
-
-								
 							}}
-						></button>
+						>
+							Vote up
+						</button>
 					</li>
 				))}
 			</ul>

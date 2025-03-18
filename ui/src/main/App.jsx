@@ -2,9 +2,8 @@ import { ethers } from 'ethers';
 import React from 'react';
 import { voting } from '../abi/Voting';
 import AddProposalForm from './AddProposalForm';
-import AddUserForm from './AddUserForm';
-import './App.css';
-import { address, provider, signer } from './utils/cryptoUtils';
+import AdminPage from './AdminPage';
+import { address, metamaskError, signer } from './utils/cryptoUtils';
 
 const contract = new ethers.Contract(
 	'0x5FbDB2315678afecb367f032d93F642f64180aa3',
@@ -12,27 +11,24 @@ const contract = new ethers.Contract(
 	signer
 );
 
-function App() {
-	contract.isOwner().then((result) => console.log(result));
+const isAdmin = await contract.isOwner();
 
+function App() {
 	return (
 		<div className="App">
 			<header>
 				<h1>Cryptobro</h1>
 			</header>
 			<h2>
-				{address
-					? `Logged in with the following address : ${address}`
-					: 'Metamask not installed !'}
+				{metamaskError
+					? 'There was an error with Metamask !'
+					: `Logged in with the following address : ${address}${
+							isAdmin ? ' (admin)' : ''
+					  }`}
 			</h2>
-			<AddUserForm></AddUserForm>
+			{isAdmin ? <AdminPage></AdminPage> : <></>}
+			<br />
 			<AddProposalForm></AddProposalForm>
-			<br />
-			<button>Start proposals</button>
-			<button>Close proposals</button>
-			<br />
-			<button>Start voting</button>
-			<button>Close voting</button>
 		</div>
 	);
 }

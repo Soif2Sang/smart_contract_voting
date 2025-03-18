@@ -1,32 +1,19 @@
-import { ethers } from 'ethers';
-import React, { useState } from 'react';
+import React from 'react';
+import { loginWithMetamask } from './utils/loginWithMetamask';
 
-async function loginWithMetamask() {
-	if (window.ethereum) {
-		const provider = new ethers.BrowserProvider(window.ethereum);
-		const accounts = await window.ethereum.request({
-			method: 'eth_requestAccounts',
-		});
-
-		const selectedAddress = window.ethereum.selectedAddress;
-
-		console.log(accounts);
-		console.log(selectedAddress);
-		return `Logged in with the following address : ${selectedAddress}`;
-	} else {
-		return 'Metamask not installed !';
-	}
-}
-function MetamaskLoginSection() {
-	const [status, setStatus] = useState('');
+function MetamaskLoginSection({ address, setAddress }) {
 	return (
 		<>
-			<h2>{status}</h2>
+			<h2>
+				{address
+					? `Logged in with the following address : ${address}`
+					: 'Metamask not installed !'}
+			</h2>
 			<button
-				onClick={(event) => {
+				onClick={async (event) => {
 					event.preventDefault();
 
-					setStatus(loginWithMetamask());
+					setAddress(await loginWithMetamask());
 				}}
 			>
 				Login with Metamask

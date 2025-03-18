@@ -1,15 +1,21 @@
+import React, { useState } from 'react';
 import AddProposalForm from './AddProposalForm';
 import AddUserForm from './AddUserForm';
 import './App.css';
 import MetamaskLoginSection from './MetamaskLoginSection';
 
 function App() {
+	const [address, setAddress] = useState('');
+
 	return (
 		<div className="App">
 			<header>
 				<h1>Cryptobro</h1>
 			</header>
-			<MetamaskLoginSection></MetamaskLoginSection>
+			<MetamaskLoginSection
+				address={address}
+				setAddress={setAddress}
+			></MetamaskLoginSection>
 			<AddUserForm></AddUserForm>
 			<AddProposalForm></AddProposalForm>
 			<br />

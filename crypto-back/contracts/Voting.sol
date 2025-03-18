@@ -3,7 +3,6 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Voting is Ownable {
-
     struct Voter {
         bool isRegistered;
         bool hasVoted;
@@ -24,7 +23,10 @@ contract Voting is Ownable {
         VotesTallied
     }
 
-    event WorkflowStatusChange(WorkflowStatus previousStatus, WorkflowStatus newStatus);
+    event WorkflowStatusChange(
+        WorkflowStatus previousStatus,
+        WorkflowStatus newStatus
+    );
 
     event VoterRegistered(address voterAddress);
 
@@ -58,7 +60,10 @@ contract Voting is Ownable {
 
         workflowStatus = WorkflowStatus.ProposalsRegistrationStarted;
 
-        emit WorkflowStatusChange(WorkflowStatus.RegisteringVoters, WorkflowStatus.ProposalsRegistrationStarted);
+        emit WorkflowStatusChange(
+            WorkflowStatus.RegisteringVoters,
+            WorkflowStatus.ProposalsRegistrationStarted
+        );
     }
 
     function registerProposal(string memory description) public onlyOwner {
@@ -83,7 +88,10 @@ contract Voting is Ownable {
 
         workflowStatus = WorkflowStatus.ProposalsRegistrationEnded;
 
-        emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationStarted, WorkflowStatus.ProposalsRegistrationEnded);
+        emit WorkflowStatusChange(
+            WorkflowStatus.ProposalsRegistrationStarted,
+            WorkflowStatus.ProposalsRegistrationEnded
+        );
     }
 
     function startVotingSession() public onlyOwner {
@@ -91,7 +99,10 @@ contract Voting is Ownable {
 
         workflowStatus = WorkflowStatus.VotingSessionStarted;
 
-        emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationEnded, WorkflowStatus.VotingSessionStarted);
+        emit WorkflowStatusChange(
+            WorkflowStatus.ProposalsRegistrationEnded,
+            WorkflowStatus.VotingSessionStarted
+        );
     }
 
     function vote(uint[] memory proposalIds) public payable {
@@ -108,7 +119,7 @@ contract Voting is Ownable {
         voter.votedProposalIds = proposalIds;
         voter.hasVoted = true;
 
-        emit Voted(msg.sender , proposalIds);
+        emit Voted(msg.sender, proposalIds);
     }
 
     function endVotingSession() public onlyOwner {
@@ -116,19 +127,24 @@ contract Voting is Ownable {
 
         workflowStatus = WorkflowStatus.VotingSessionEnded;
 
-        emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
+        emit WorkflowStatusChange(
+            WorkflowStatus.VotingSessionStarted,
+            WorkflowStatus.VotingSessionEnded
+        );
 
         // Calculate the winner
 
         for (uint8 i = 1; i <= numProposals; i++) {
-             if (proposals[i].voteCount > proposals[winningProposalId].voteCount) {
+            if (
+                proposals[i].voteCount > proposals[winningProposalId].voteCount
+            ) {
                 winningProposalId = i;
             }
         }
     }
 
     function isOwner() public view returns (bool) {
-        return isOwner();
+        return msg.sender == owner();
     }
 
     function getWinner() public view returns (uint) {

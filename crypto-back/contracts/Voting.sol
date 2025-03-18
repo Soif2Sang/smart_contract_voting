@@ -127,6 +127,10 @@ contract Voting is Ownable {
         }
     }
 
+    function isOwner() public view returns (bool) {
+        return isOwner();
+    }
+
     function getWinner() public view returns (uint) {
         return winningProposalId;
     }

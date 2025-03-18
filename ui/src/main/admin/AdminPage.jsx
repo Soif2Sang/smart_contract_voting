@@ -1,16 +1,12 @@
 import React from 'react';
 import AddUserForm from './AddUserForm';
+import ChangeWorkflow from "./WorkflowChange";
 
 function AdminPage() {
 	return (
 		<>
 			<AddUserForm></AddUserForm>
-
-			<button>Start proposals</button>
-			<button>Close proposals</button>
-			<br />
-			<button>Start voting</button>
-			<button>Close voting</button>
+			<ChangeWorkflow/>
 		</>
 	);
 }

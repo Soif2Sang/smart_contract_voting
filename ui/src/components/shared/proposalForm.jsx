@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useContract } from "../../abi/ContractProvider";
+import { useContract } from "../../utils/abi/ContractProvider";
 
 export default function ProposalForm() {
     const { contract, workflow } = useContract();

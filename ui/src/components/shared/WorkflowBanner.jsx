@@ -1,5 +1,5 @@
 // WorkflowBanner.js
-import { useContract } from "../../abi/ContractProvider";
+import { useContract } from "../../utils/abi/ContractProvider";
 
 // Mapping of workflow status numbers to descriptive names
 const workflowNames = {

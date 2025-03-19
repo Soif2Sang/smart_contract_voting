@@ -1,4 +1,4 @@
-import { useContract } from "../../abi/ContractProvider";
+import { useContract } from "../../utils/abi/ContractProvider";
 
 export default function ChangeWorkflow() {
     const { contract, workflow } = useContract();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useContract } from "../../abi/ContractProvider";
+import { useContract } from "../../utils/abi/ContractProvider";
 
 export default function AddVoterForm() {
 	const { contract, workflow } = useContract();

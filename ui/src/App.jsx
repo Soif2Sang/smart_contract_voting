@@ -1,12 +1,12 @@
 // App.js
 import React from 'react';
-import AdminPage from './admin/AdminPage';
+import AdminPage from './components/admin/AdminPage';
 import { address, metamaskError } from './utils/cryptoUtils';
-import { useContract } from "../abi/ContractProvider";
-import ProposalForm from "./public/proposalForm";
-import WorkflowBanner from "./shared/WorkflowBanner";
-import ProposalList from "./public/proposalList";
-import WinnerDisplay from "./shared/WinnerDisplay";
+import { useContract } from "./utils/abi/ContractProvider";
+import ProposalForm from "./components/shared/proposalForm";
+import WorkflowBanner from "./components/shared/WorkflowBanner";
+import ProposalList from "./components/shared/proposalList";
+import WinnerDisplay from "./components/shared/WinnerDisplay";
 
 function App() {
     const { isAdmin, contract } = useContract();

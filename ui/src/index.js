@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './main/App';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {ContractProvider} from "./abi/ContractProvider";
+import {ContractProvider} from "./utils/abi/ContractProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

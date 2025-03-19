@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { voting } from './Voting';
-import { address, metamaskError, signer } from '../main/utils/cryptoUtils';
+import { address, metamaskError, signer } from '../cryptoUtils';
 
 const ContractContext = createContext(null);
 

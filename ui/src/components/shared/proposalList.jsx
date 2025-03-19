@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useContract } from "../../abi/ContractProvider";
+import { useContract } from "../../utils/abi/ContractProvider";
 
 export default function ProposalList() {
     const [proposals, setProposals] = useState([]);
@@ -13,6 +13,10 @@ export default function ProposalList() {
             try {
                 const fetchedProposals = await contract.getAllProposals();
                 console.log('Fetched proposals:', fetchedProposals);
+
+                if (fetchedProposals) {
+                    console.log("ici;")
+                }
                 setProposals(fetchedProposals);
             } catch (error) {
                 console.error("Error fetching proposals:", error);

@@ -5,6 +5,7 @@ import {useContract} from "../abi/ContractProvider";
 import ProposalForm from "./public/proposalForm";
 import WorkflowBanner from "./shared/WorkflowBanner";
 import VoterList from "./shared/voterList";
+import ProposalList from "./public/proposalList";
 
 function App() {
     const {isAdmin} = useContract();
@@ -25,10 +26,11 @@ function App() {
             <h2>
                 Logged in with the following address : {address} {isAdmin ? ' (admin)' : ''}
             </h2>
-            {/*<WorkflowBanner/>*/}
+            <WorkflowBanner/>
 
-            {isAdmin ? <AdminPage></AdminPage> : <ProposalForm/>}
-            {/*<VoterList/>*/}
+            {isAdmin ? <AdminPage/>: <ProposalForm/>}
+
+            <ProposalList/>
         </div>);
 }
 

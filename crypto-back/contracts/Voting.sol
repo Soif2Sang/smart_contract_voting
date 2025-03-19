@@ -94,6 +94,7 @@ contract Voting is Ownable {
 
     function registerVoter(address _voter) external onlyOwner {
         require(!whitelist[_voter].isRegistered, "Voter already registered");
+        require(status == WorkflowStatus.RegisteringVoters, "Voters registration is not open");
         whitelist[_voter] = Voter(true, false, 0);
         voterAddresses.push(_voter);
         emit VoterRegistered(_voter);
@@ -115,7 +116,7 @@ contract Voting is Ownable {
     function vote(uint _proposalId) external {
         require(status == WorkflowStatus.VotingSessionStarted, "Voting session is not open");
         require(whitelist[msg.sender].isRegistered, "Voter is not registered");
-        require(whitelist[msg.sender].hasVoted, "Voter already voted");
+        require(!whitelist[msg.sender].hasVoted, "Voter already voted");
 
         proposals[_proposalId].voteCount++;
         whitelist[msg.sender].hasVoted = true;
@@ -123,6 +124,10 @@ contract Voting is Ownable {
         emit Voted(msg.sender, _proposalId);
     }
 
+    function openVotersRegistration() external onlyOwner {
+        emit WorkflowStatusChange(status, WorkflowStatus.RegisteringVoters);
+        status = WorkflowStatus.RegisteringVoters;
+    }
     function openRegistration() external onlyOwner {
         emit WorkflowStatusChange(status, WorkflowStatus.ProposalsRegistrationStarted);
         status = WorkflowStatus.ProposalsRegistrationStarted;

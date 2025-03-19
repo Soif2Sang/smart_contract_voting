@@ -34,7 +34,7 @@ export default function VoterList() {
 
         fetchVoters();
 
-        contract.on("VoterRegistered", (voterAddress) => {
+        contract.addListener("VoterRegistered", (voterAddress) => {
             console.log(`Voter registered: ${voterAddress}`);
             fetchVoters();
         });

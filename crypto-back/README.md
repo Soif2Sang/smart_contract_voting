@@ -13,16 +13,4 @@ npx hardhat node
 npx hardhat run --network localhost scripts/deploy.js
 ```
 
-# Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+If you get an error regarding JSON-RPC error, delete the metamask network, and add it back, it is http://localhost:8545, chainID: 31337

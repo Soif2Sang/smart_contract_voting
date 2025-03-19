@@ -9,7 +9,10 @@ export default function ChangeWorkflow() {
 
         try {
             let tx;
-            if (newStatus === "openRegistration") {
+            if (newStatus === "openVotersRegistration") {
+                tx = await contract.openVotersRegistration();
+            }
+            else if (newStatus === "openRegistration") {
                 tx = await contract.openRegistration();
             } else if (newStatus === "closeRegistration") {
                 tx = await contract.closeRegistration();
@@ -33,6 +36,7 @@ export default function ChangeWorkflow() {
     return (
         <div>
             <h2>Change Workflow Status</h2>
+            <button onClick={() => handleChangeWorkflow("openVotersRegistration")}>Open Voters Registration</button>
             <button onClick={() => handleChangeWorkflow("openRegistration")}>Open Registration</button>
             <button onClick={() => handleChangeWorkflow("closeRegistration")}>Close Registration</button>
             <button onClick={() => handleChangeWorkflow("openVoting")}>Open Voting</button>

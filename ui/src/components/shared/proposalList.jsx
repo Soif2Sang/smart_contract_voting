@@ -5,8 +5,9 @@ export default function ProposalList() {
     const [proposals, setProposals] = useState([]);
     const { contract, workflow } = useContract();
     const [selectedProposal, setSelectedProposal] = useState(null);
-    const [loading, setLoading] = useState(false); // Add loading state
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [hasVoted, setHasVoted] = useState(false); // Add hasVoted state
 
     const fetchProposals = async () => {
         if (!contract) return;
@@ -14,7 +15,6 @@ export default function ProposalList() {
         setError(null);
         try {
             const fetchedProposals = await contract.getAllProposals();
-            // Important: Check if fetchedProposals is valid and has the expected structure
             console.log('fetchedProposals', fetchedProposals);
             setProposals(Array.from(fetchedProposals));
         } catch (err) {
@@ -26,10 +26,22 @@ export default function ProposalList() {
         }
     };
 
+    const fetchHasVoted = async () => {
+        if (!contract) return;
+        try {
+            const voted = await contract.hasVoted();
+            setHasVoted(voted);
+        } catch (err) {
+            console.error("Error fetching hasVoted:", err);
+            setError(err.message || "Failed to fetch hasVoted. Please check the console for details.");
+        }
+    };
+
     useEffect(() => {
         if (!contract) return;
 
-        fetchProposals(); // Initial fetch
+        fetchProposals();
+        fetchHasVoted();
 
         const proposalRegisteredListener = () => {
             console.log("ProposalRegistered event triggered, fetching proposals...");
@@ -39,16 +51,15 @@ export default function ProposalList() {
         const votedListener = () => {
             console.log("Voted event triggered, fetching proposals...");
             fetchProposals();
+            fetchHasVoted();
         };
 
-        // Use .on instead of .addListener, and store the listeners for proper unsubscription
         contract.on("ProposalRegistered", proposalRegisteredListener);
         contract.addListener("ProposalRegistered", proposalRegisteredListener);
         contract.on("Voted", votedListener);
         contract.addListener("Voted", votedListener);
 
         return () => {
-            // Use .off to remove listeners
             contract.off("ProposalRegistered", proposalRegisteredListener);
             contract.off("Voted", votedListener);
         };
@@ -69,8 +80,23 @@ export default function ProposalList() {
         }
     };
 
+    const handleUnvote = async () => {
+        if (!contract) return;
+        setLoading(true);
+        setError(null);
+        try {
+            await contract.unvote();
+            console.log(`Unvoted`);
+        } catch (err) {
+            console.error("Error unvoting:", err);
+            setError(err.message || "Failed to unvote. Please check the console for details.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (loading) {
-        return <div className="p-4 bg-white shadow rounded">Loading proposals...</div>;
+        return <div className="p-4 bg-white shadow rounded">Loading...</div>;
     }
 
     if (error) {
@@ -91,7 +117,7 @@ export default function ProposalList() {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vote Count</th>
                         {workflow === 3 && (
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Select</th>
                         )}
                     </tr>
                     </thead>
@@ -100,16 +126,17 @@ export default function ProposalList() {
                         <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{proposal[0]}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{proposal[1]?.toString() || "0"}</td>
-                            {/* proposal[1] could be undefined, handle it safely */}
-                            {workflow === 3 && (
+                            {workflow === 3 && !hasVoted && (
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    <button
-                                        onClick={() => setSelectedProposal(index)}
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                        disabled={loading} // Disable button while loading
-                                    >
-                                        Select
-                                    </button>
+                                    <input
+                                        type="radio"
+                                        id={`proposal-${index}`}
+                                        name="proposal"
+                                        value={index}
+                                        checked={selectedProposal === index}
+                                        onChange={() => setSelectedProposal(index)}
+                                        disabled={loading}
+                                    />
                                 </td>
                             )}
                         </tr>
@@ -117,14 +144,26 @@ export default function ProposalList() {
                     </tbody>
                 </table>
             </div>
-            {workflow === 3 && selectedProposal !== null && (
+            {workflow === 3 && selectedProposal !== null && !hasVoted && (
                 <div className="mt-4">
                     <button
                         onClick={handleVote}
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        disabled={loading} // Disable button while loading
+                        disabled={loading}
                     >
                         Vote
+                    </button>
+                </div>
+            )}
+
+            {workflow === 3 && hasVoted && (
+                <div className="mt-4">
+                    <button
+                        onClick={handleUnvote}
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        disabled={loading}
+                    >
+                        Unvote
                     </button>
                 </div>
             )}

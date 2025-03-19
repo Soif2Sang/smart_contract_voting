@@ -36,8 +36,8 @@ export default function ProposalForm() {
                 />
                 <button
                     type="submit"
-                    className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${workflow !== 2 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={workflow !== 2}
+                    className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${workflow !== 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={workflow !== 1}
                 >
                     Submit
                 </button>

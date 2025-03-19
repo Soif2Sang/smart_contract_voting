@@ -25,10 +25,10 @@ function App() {
             <h2>
                 Logged in with the following address : {address} {isAdmin ? ' (admin)' : ''}
             </h2>
-            <WorkflowBanner/>
+            {/*<WorkflowBanner/>*/}
 
             {isAdmin ? <AdminPage></AdminPage> : <ProposalForm/>}
-            <VoterList/>
+            {/*<VoterList/>*/}
         </div>);
 }
 

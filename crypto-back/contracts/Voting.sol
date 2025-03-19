@@ -72,6 +72,9 @@ contract Voting is Ownable {
     function getProposal(uint _proposalId) public view returns (Proposal memory) {
         return proposals[_proposalId];
     }
+    function getProposals() public view returns (Proposal[] memory) {
+        return proposals;
+    }
     // BONUS
     function transferOwnership(address newOwner) public override onlyOwner {
         // source: https://docs.openzeppelin.com/contracts/5.x/api/access

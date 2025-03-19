@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useContract } from "../../abi/ContractProvider";
 
 export default function ProposalForm() {
-    const { contract } = useContract();
+    const { contract, workflow } = useContract();
     const [proposal, setProposal] = useState('');
 
     const submitProposal = async (e) => {
@@ -36,7 +36,8 @@ export default function ProposalForm() {
                 />
                 <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${workflow !== 2 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={workflow !== 2}
                 >
                     Submit
                 </button>

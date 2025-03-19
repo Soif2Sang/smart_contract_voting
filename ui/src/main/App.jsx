@@ -9,7 +9,7 @@ import ProposalList from "./public/proposalList";
 import WinnerDisplay from "./shared/WinnerDisplay";
 
 function App() {
-    const { isAdmin } = useContract();
+    const { isAdmin, contract } = useContract();
 
     if (metamaskError) {
         return (
@@ -24,6 +24,8 @@ function App() {
         );
     }
 
+    if (!contract) return <div></div>
+
     return (
         <div className="min-h-screen bg-gray-100">
             <header className="bg-blue-500 p-4 text-white text-center">
@@ -35,9 +37,9 @@ function App() {
                     <span className="text-green-600">(admin)</span> : ''}
                 </h2>
             </div>
-            <WorkflowBanner/>
 
             <div className="p-4">
+                <WorkflowBanner/>
 
                 {isAdmin ? <AdminPage/> : <ProposalForm/>}
 

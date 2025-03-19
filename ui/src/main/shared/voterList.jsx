@@ -59,7 +59,7 @@ export default function VoterList() {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.address}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.isRegistered.toString()}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.hasVoted.toString()}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.votedProposalId}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.hasVoted && voter.votedProposalId}</td>
                         </tr>
                     ))}
                     </tbody>

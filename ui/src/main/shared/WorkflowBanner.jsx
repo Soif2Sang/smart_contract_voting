@@ -15,7 +15,7 @@ export default function WorkflowBanner() {
     const { workflow } = useContract();
 
     return (
-        <div className="p-4 bg-white shadow rounded m-4">
+        <div className="p-4 bg-white shadow rounded mb-4">
             <h1 className="text-xl font-semibold mb-2">Workflow Banner</h1>
             <p className="text-gray-700">Current workflow status: {workflowNames[workflow]}</p>
         </div>

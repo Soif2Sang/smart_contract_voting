@@ -87,6 +87,11 @@ contract Voting is Ownable {
         whitelist[msg.sender].hasVoted = false;
         whitelist[msg.sender].votedProposalId = 0;
     }
+    // BONUS
+    function hasVoted() public view returns (bool) {
+        return whitelist[msg
+        .sender].hasVoted;
+    }
     function isOwner() public view returns (bool) {
         return owner() == msg.sender;
     }

@@ -43,7 +43,7 @@ contract Voting is Ownable {
         return (voterAddresses, voters);
     }
 
-    function getWinner() public view returns (uint) {
+    function getWinner() public view returns (uint, Proposal memory) {
         require(status == WorkflowStatus.VotesTallied, "Votes are not tallied yet");
         uint winnerId = 0;
         uint winnerVotes = 0;
@@ -53,7 +53,7 @@ contract Voting is Ownable {
                 winnerVotes = proposals[i].voteCount;
             }
         }
-        return winnerId;
+        return (winnerId, _getProposal(winnerId));
     }
 
     // FOR THE FRONTEND
@@ -68,8 +68,7 @@ contract Voting is Ownable {
     function getAllProposals() public view returns (Proposal[] memory) {
         return proposals;
     }
-    // FOR THE FRONTEND
-    function getProposal(uint _proposalId) public view returns (Proposal memory) {
+    function _getProposal(uint _proposalId) private view returns (Proposal memory) {
         return proposals[_proposalId];
     }
     function getProposals() public view returns (Proposal[] memory) {

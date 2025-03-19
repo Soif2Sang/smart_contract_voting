@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useContract} from "../../abi/ContractProvider";
+import { useContract } from "../../abi/ContractProvider";
 
 export default function ProposalForm() {
     const { contract } = useContract();
@@ -24,15 +24,22 @@ export default function ProposalForm() {
     };
 
     return (
-        <div>
-            <h1>Proposal Form</h1>
-            <form onSubmit={submitProposal}>
+        <div className="p-4 bg-white shadow rounded mb-4">
+            <h2 className="text-lg font-semibold mb-4">Proposal Form</h2>
+            <form onSubmit={submitProposal} className="space-y-4">
                 <textarea
                     value={proposal}
                     onChange={(e) => setProposal(e.target.value)}
                     placeholder="Enter your proposal here"
+                    className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                    rows="4"
                 />
-                <button type="submit">Submit</button>
+                <button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Submit
+                </button>
             </form>
         </div>
     );

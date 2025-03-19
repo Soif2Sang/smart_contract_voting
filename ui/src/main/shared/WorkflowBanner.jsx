@@ -1,5 +1,5 @@
+// WorkflowBanner.js
 import { useContract } from "../../abi/ContractProvider";
-import { useState, useEffect } from "react";
 
 // Mapping of workflow status numbers to descriptive names
 const workflowNames = {
@@ -15,9 +15,9 @@ export default function WorkflowBanner() {
     const { workflow } = useContract();
 
     return (
-        <div>
-            <h1>Workflow Banner</h1>
-            <p>Current workflow status: {workflowNames[workflow]}</p>
+        <div className="p-4 bg-white shadow rounded m-4">
+            <h1 className="text-xl font-semibold mb-2">Workflow Banner</h1>
+            <p className="text-gray-700">Current workflow status: {workflowNames[workflow]}</p>
         </div>
     );
 }

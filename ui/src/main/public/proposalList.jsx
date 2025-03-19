@@ -3,48 +3,43 @@ import { useContract } from "../../abi/ContractProvider";
 
 export default function ProposalList() {
     const [proposals, setProposals] = useState([]);
-    const { contract } = useContract();
+    const { contract, workflow } = useContract();
     const [selectedProposal, setSelectedProposal] = useState(null);
-    const [workflowStatus, setWorkflowStatus] = useState(0);
 
     useEffect(() => {
         if (!contract) return;
 
-        async function fetchProposals() {
+        const fetchProposals = async () => {
             try {
                 const fetchedProposals = await contract.getAllProposals();
+                console.log('Fetched proposals:', fetchedProposals);
                 setProposals(fetchedProposals);
             } catch (error) {
                 console.error("Error fetching proposals:", error);
             }
-        }
-
-        async function fetchWorkflowStatus() {
-            try {
-                const status = await contract.getWorkflowStatus();
-                setWorkflowStatus(Number(status));
-            } catch (error) {
-                console.error("Error fetching workflow status:", error);
-            }
-        }
+        };
 
         fetchProposals();
-        fetchWorkflowStatus();
 
-        contract.addListener("ProposalRegistered", (proposalId) => {
-            console.log(`Proposal registered: ${proposalId}`);
+        const proposalRegisteredListener = () => {
+            console.log("fetch Proposal")
             fetchProposals();
-        });
+        };
 
-        contract.addListener("Voted", (voter, proposalId) => {
-            console.log(`Voter ${voter} voted for proposal ${proposalId}`);
+        const votedListener = () => {
             fetchProposals();
-        });
+        };
 
-        contract.addListener("WorkflowStatusChange", (previousStatus, newStatus) => {
-            console.log(`Workflow status changed from ${previousStatus} to ${newStatus}`);
-            fetchWorkflowStatus();
-        });
+
+        contract.on("ProposalRegistered", proposalRegisteredListener);
+        contract.addListener("ProposalRegistered", proposalRegisteredListener);
+        contract.on("Voted", votedListener);
+        contract.addListener("Voted", votedListener);
+
+        return () => {
+            contract.removeListener("ProposalRegistered", proposalRegisteredListener);
+            contract.removeListener("Voted", votedListener);
+        };
 
     }, [contract]);
 
@@ -55,28 +50,54 @@ export default function ProposalList() {
             await contract.vote(selectedProposal);
             console.log(`Voted for proposal ${selectedProposal}`);
         } catch (error) {
+            alert("Error voting")
             console.error("Error voting:", error);
         }
     };
 
     return (
-        <div>
-            <h2>Proposals</h2>
-            <ul>
-                {proposals.map((proposal, index) => (
-                    <li key={index}>
-                        <p><strong>Description:</strong> {proposal.description}</p>
-                        <p><strong>Vote Count:</strong> {proposal.voteCount.toString()}</p>
-                        {workflowStatus === 3 && (
-                            <button onClick={() => setSelectedProposal(index)}>
-                                Select
-                            </button>
+        <div className="p-4 bg-white shadow rounded">
+            <h2 className="text-lg font-semibold mb-4">Proposals</h2>
+            <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vote Count</th>
+                        {workflow === 3 && (
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         )}
-                    </li>
-                ))}
-            </ul>
-            {workflowStatus === 3 && selectedProposal !== null && (
-                <button onClick={handleVote}>Vote</button>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {proposals.map((proposal, index) => (
+                        <tr key={index}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{proposal[0]}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{proposal[1].toString()}</td>
+                            {workflow === 3 && (
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <button
+                                        onClick={() => setSelectedProposal(index)}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                    >
+                                        Select
+                                    </button>
+                                </td>
+                            )}
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+            {workflow === 3 && selectedProposal !== null && (
+                <div className="mt-4">
+                    <button
+                        onClick={handleVote}
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Vote
+                    </button>
+                </div>
             )}
         </div>
     );

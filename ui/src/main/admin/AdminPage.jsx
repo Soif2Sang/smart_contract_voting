@@ -1,3 +1,4 @@
+// AdminPage.js
 import React from 'react';
 import AddUserForm from './AddUserForm';
 import ChangeWorkflow from "./WorkflowChange";
@@ -6,9 +7,9 @@ import VoterList from "../shared/voterList";
 function AdminPage() {
 	return (
 		<>
-			<ChangeWorkflow/>
-			<AddUserForm/>
-			<VoterList/>
+			<ChangeWorkflow />
+			<AddUserForm />
+			<VoterList />
 		</>
 	);
 }

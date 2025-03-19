@@ -1,3 +1,4 @@
+// VoterList.js
 import { useState, useEffect } from "react";
 import { useContract } from "../../abi/ContractProvider";
 
@@ -10,19 +11,12 @@ export default function VoterList() {
 
         async function fetchVoters() {
             try {
-                // Call the contract method to get whitelisted voters.
-                // getWhitelistedVoters returns a tuple: ([addresses], [voterInfos])
                 const [addresses, voterInfos] = await contract.getWhitelistedVoters();
 
-                console.log("Addresses:", addresses);
-                console.log("Voter infos:", voterInfos);
-
-                // Format the fetched data into an array of voter objects.
                 const formattedVoters = addresses.map((address, index) => ({
                     address,
                     isRegistered: voterInfos[index].isRegistered,
                     hasVoted: voterInfos[index].hasVoted,
-                    // Convert votedProposalId to a string if it is a BigNumber.
                     votedProposalId: voterInfos[index].votedProposalId.toString(),
                 }));
 
@@ -34,25 +28,43 @@ export default function VoterList() {
 
         fetchVoters();
 
-        contract.addListener("VoterRegistered", (voterAddress) => {
-            console.log(`Voter registered: ${voterAddress}`);
+        const voterRegisteredListener = (voterAddress) => {
             fetchVoters();
-        });
+        };
+
+        contract.on("VoterRegistered", voterRegisteredListener);
+        contract.addListener("VoterRegistered", voterRegisteredListener);
+
+        return () => {
+            contract.removeListener("VoterRegistered", voterRegisteredListener);
+        };
     }, [contract]);
 
     return (
-        <div>
-            <h2>Registered Voters</h2>
-            <ul>
-                {voters.map((voter, index) => (
-                    <li key={index}>
-                        <p><strong>Address:</strong> {voter.address}</p>
-                        <p><strong>Registered:</strong> {voter.isRegistered.toString()}</p>
-                        <p><strong>Voted:</strong> {voter.hasVoted.toString()}</p>
-                        <p><strong>Voted Proposal ID:</strong> {voter.votedProposalId}</p>
-                    </li>
-                ))}
-            </ul>
+        <div className="p-4 bg-white shadow rounded mb-4">
+            <h2 className="text-lg font-semibold mb-4">Registered Voters</h2>
+            <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registered</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Voted</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Voted Proposal ID</th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {voters.map((voter, index) => (
+                        <tr key={index}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.address}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.isRegistered.toString()}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.hasVoted.toString()}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{voter.votedProposalId}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

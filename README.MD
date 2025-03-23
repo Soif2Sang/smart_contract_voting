@@ -11,3 +11,5 @@ This project was developed by:
 - MAXENCE DEWADDER
 - MAXIME SONTAG
 - LUCAS DUBUSSE 
+
+Every task has been fairly distributed across all contributors.

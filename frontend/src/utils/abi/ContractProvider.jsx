@@ -20,7 +20,7 @@ export const ContractProvider = ({ children }) => {
         async function loadContract() {
             try {
                 const contractInstance = new ethers.Contract(
-                    '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+                    '0x5FbDB2315678afecb367f032d93F642f64180aa3',
                     voting.abi,
                     signer
                 );
@@ -51,9 +51,9 @@ export const ContractProvider = ({ children }) => {
         getCurrentWorkflow();
 
         contract.on('WorkflowStatusChange', handleWorkflowChange);
-        contract.addListener('WorkflowStatusChange', handleWorkflowChange);
+        // contract.addListener('WorkflowStatusChange', handleWorkflowChange);
         return () => {
-            contract.removeListener('WorkflowStatusChange', handleWorkflowChange);
+            // contract.removeListener('WorkflowStatusChange', handleWorkflowChange);
         };
     }, [contract]);
 

@@ -54,6 +54,7 @@ export default function ProposalList() {
             fetchHasVoted();
         };
 
+        // Due to a unpreditable behavior of the contract.on method, we need to use both on and addListener
         contract.on("ProposalRegistered", proposalRegisteredListener);
         contract.addListener("ProposalRegistered", proposalRegisteredListener);
         contract.on("Voted", votedListener);
@@ -61,7 +62,9 @@ export default function ProposalList() {
 
         return () => {
             contract.off("ProposalRegistered", proposalRegisteredListener);
+            contract.removeListener("ProposalRegistered", proposalRegisteredListener);
             contract.off("Voted", votedListener);
+            contract.removeListener("Voted", votedListener);
         };
     }, [contract]);
 

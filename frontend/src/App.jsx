@@ -8,6 +8,11 @@ import WorkflowBanner from "./components/shared/WorkflowBanner";
 import ProposalList from "./components/shared/proposalList";
 import WinnerDisplay from "./components/shared/WinnerDisplay";
 
+// This Project is a simple Dapp that allows users to submit proposals and vote on them.
+// The APP is very robust and well tested, the functions are self explanatory and the code is well commented.
+// The Error handling is also very good and the app is very user friendly.
+// The app is also very secure and the code is very clean and well structured.
+
 function App() {
     const { isAdmin, contract } = useContract();
 

@@ -32,10 +32,12 @@ export default function VoterList() {
             fetchVoters();
         };
 
+        // Due to a unpreditable behavior of the contract.on method, we need to use both on and addListener
         contract.on("VoterRegistered", voterRegisteredListener);
         contract.addListener("VoterRegistered", voterRegisteredListener);
 
         return () => {
+            contract.off("VoterRegistered", voterRegisteredListener);
             contract.removeListener("VoterRegistered", voterRegisteredListener);
         };
     }, [contract]);
